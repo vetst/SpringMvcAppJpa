@@ -9,26 +9,29 @@ import web.model.User;
 import web.service.UserService;
 
 @Controller
-@RequestMapping("/")
 public class UserController {
 
-    @Autowired
     private UserService service;
 
+    @Autowired
+    public UserController(UserService service) {
+        this.service = service;
+    }
+
     @GetMapping("main")
-    public String getUsersTable(Model model) {
+    public String get(Model model) {
         model.addAttribute("userList", service.getAllUser());
         return "main";
     }
 
     @PostMapping("main")
-    public String addUser(User user) {
+    public String add(User user) {
         service.addUser(user);
         return "redirect:/main";
     }
 
     @PostMapping("delete")
-    public String deleteUser(User user) {
+    public String delete(User user) {
         service.deleteUser(user.getId());
         return "redirect:/main";
     }
@@ -42,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("update")
-    public String updateUser(User user) {
+    public String update(User user) {
         service.updateUser(user.getId(), user.getName(), user.getSurName());
         return "redirect:/main";
     }
